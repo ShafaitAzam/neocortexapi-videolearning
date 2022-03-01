@@ -1,3 +1,15 @@
+# Introduction
+This branch has been created for the purpose of testing and analyzing the parameters of the existing Video Learning Project in the neocortexapi. My previous git link and commit link is given below. As I have started working with the initial version of code, I have commited on the branch that I have forked initially. From Now on I am using this branch for my work. You can check my previous commits on the following links.
+
+https://github.com/ShafaitAzam/neocortexapi/commits/Shafait_Azam_CodeX
+https://github.com/ShafaitAzam/neocortexapi/tree/Shafait_Azam_CodeX
+
++ Project Name: ML21/22 30.Test and Investigation of Video Learning Project
++ Group Name: CodeX
++ Group Member 1: Shafait Azam
++ Matriculation No: 1345243
+
+
 # Video Learning With NeoCortexApi:
 Module: Project 12  
 Instructor: Damir Dobric, Proffessor Andreas Pech.  
