@@ -246,7 +246,7 @@ namespace HTMVideoLearning
                         {
                             // Inferring the current frame encoded bit array with learned SP
                             var lyrOut = layer1.Compute(currentFrame.EncodedBitArray, learn) as ComputeCycle;
-                            var nextFramePossibilities = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 1);
+                            var nextFramePossibilities = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
                             foreach (var predictedOutput in nextFramePossibilities)
                             {
                                 possibleOutcome.Add(predictedOutput.PredictedInput);
@@ -752,7 +752,7 @@ namespace HTMVideoLearning
                             if (lyrOut.PredictiveCells.Count > 0)
                             {
                                 //var predictedInputValue = cls.GetPredictedInputValue(lyrOut.PredictiveCells.ToArray());
-                                var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 1);
+                                var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
 
                                 foreach (var item in predictedInputValues)
                                 {

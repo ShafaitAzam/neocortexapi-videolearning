@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NeoCortexApi" Version="1.1.1" />
+    <PackageReference Include="NeoCortexApi" Version="1.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
@@ -27,6 +27,10 @@
     <None Update="SmallTrainingSet\Triangle\triangle.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+
+	  <None Update="SmallTrainingSet\Pentagon\pentagonNew.mp4">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
     <None Update="videoConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
