@@ -36,7 +36,7 @@
   "ColumnDimensions": [
     2048
   ],
-  "CellsPerColumn": 160,
+  "CellsPerColumn": 40,
   "InputDimensions": [
     100,
     100
