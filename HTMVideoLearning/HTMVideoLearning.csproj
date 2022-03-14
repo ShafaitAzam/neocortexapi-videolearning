@@ -31,6 +31,9 @@
 	  <None Update="SmallTrainingSet\Pentagon\pentagonNew.mp4">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="SmallTrainingSet\Star\starNew.mp4">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
     <None Update="videoConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

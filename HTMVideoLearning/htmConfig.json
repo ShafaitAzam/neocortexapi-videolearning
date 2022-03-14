@@ -34,9 +34,9 @@
   "MinOverlapDutyCycles": null,
   "MinActiveDutyCycles": null,
   "ColumnDimensions": [
-    2048
+    4096
   ],
-  "CellsPerColumn": 40,
+  "CellsPerColumn": 80,
   "InputDimensions": [
     100,
     100
