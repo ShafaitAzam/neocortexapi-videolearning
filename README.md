@@ -16,10 +16,9 @@ Instructor: Damir Dobric, Proffessor Andreas Pech.
 Student:  
 Toan Thanh Truong, Mtr. 1185050 Major: IT Gbr. 23.02.1997  
 _this readme serves as the submitted projectreport for the registered project Video Learning with HTM_
-## 1. Motivation:
-This work "Video Learning with HTM CLA" introduces videos data into the Cortical Learning Algorithm in [NeoCortex Api](https://github.com/ddobric/neocortexapi).  
-Experiment in current work involves using Temporal Memory to learn binary representation of videos (sequence of bitarrays - each bitarray represents 1 frame).  
-Afterwards the result of the learning is tested by giving the trained model an abitrary image, the model then tries to recreate a video with proceeding frame after the input frame.
+
+## 1. Introduction:
+The Project "Video Learning With HTM CLA" is built upon the concept of Brain Theory that how a specific portion of our brain which is neocortex can learn multiple sequences of videos and can successfully predict the next frame from a given input frame of a video. The whole project is built on the basis of [NeoCortex Api](https://github.com/ddobric/neocortexapi). It uses Hierarchical Themporal Memory with Cortical Learning Algorithm as a learning mechanism. As we know HTM systems work with the data which is nothing but streams of zeros and ones(Binary Data). So the video is converted into the sequences of bit arrary and then it has been pushed to the HTM model to learn significant patterns from the video. Afterwards, when the model is ready for test phase, an arbitrary image is passed through the network and the model then tries to recreate the video by predicting the proceeding frame from the input frame(arbitrary image).
 
 ## 2. Overview:
 In this experiment, Videos are learned as sequences of Frames. The link to the project code can be found in [VideoLearning.cs](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/HTMVideoLearning/VideoLearning.cs). An overall view of the experiment can be found in the [Projet Folder](https://github.com/ddobric/neocortexapi/tree/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning).  
