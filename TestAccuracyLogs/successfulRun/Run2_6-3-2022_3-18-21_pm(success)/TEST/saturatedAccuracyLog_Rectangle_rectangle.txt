@@ -1,0 +1,6 @@
+Result Log for reaching saturated accuracy at 100
+Label: Rectangle
+Video Name: rectangle
+Stop after 776 cycles
+Elapsed time: 174 min.
+reaching stable after enter newborn cycle 171.
