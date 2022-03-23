@@ -1,0 +1,6 @@
+Result Log for reaching saturated accuracy at 100
+Label: Circle
+Video Name: circle
+Stop after 33 cycles
+Elapsed time: 5 min.
+reaching stable after enter newborn cycle 172.
