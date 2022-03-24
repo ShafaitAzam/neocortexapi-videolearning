@@ -1,0 +1,6 @@
+Result Log for reaching saturated accuracy at 91.66666666666666
+Label: Star
+Video Name: starNew
+Stop after 137 cycles
+Elapsed time: 38 min.
+reaching stable after enter newborn cycle 155.
