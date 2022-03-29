@@ -1,16 +1,13 @@
-# Video Learning With NeoCortexApi:
-Module: Project 12  
-Instructor: Damir Dobric, Proffessor Andreas Pech.  
-Student:  
-Toan Thanh Truong, Mtr. 1185050 Major: IT Gbr. 23.02.1997  
-_this readme serves as the submitted projectreport for the registered project Video Learning with HTM_
+# Test And Investigation Of Video Learning Project With NeoCortexApi:
+
 ## 1. Motivation:
-This work "Video Learning with HTM CLA" introduces videos data into the Cortical Learning Algorithm in [NeoCortex Api](https://github.com/ddobric/neocortexapi).  
-Experiment in current work involves using Temporal Memory to learn binary representation of videos (sequence of bitarrays - each bitarray represents 1 frame).  
-Afterwards the result of the learning is tested by giving the trained model an abitrary image, the model then tries to recreate a video with proceeding frame after the input frame.
+The Project "Video Learning With HTM CLA" is built upon the concept of Brain Theory that how a specific portion of our brain which is neocortex can learn multiple sequences of videos and can successfully predict the next frame from a given input frame of a video. The whole project is built on the basis of [NeoCortex Api](https://github.com/ddobric/neocortexapi). It uses Hierarchical Themporal Memory with Cortical Learning Algorithm as a learning mechanism. As we know HTM systems work with the data which is nothing but streams of zeros and ones(Binary Data). So the video is converted into the sequences of bit arrary and then it has been pushed to the HTM model to learn significant patterns from the video. Afterwards, when the model is ready for test phase, an arbitrary image is passed through the network and the model then tries to recreate the video by predicting the proceeding frame from the input frame(arbitrary image).
 
 ## 2. Overview:
-In this experiment, Videos are learned as sequences of Frames. The link to the project code can be found in [VideoLearning.cs](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/HTMVideoLearning/VideoLearning.cs). An overall view of the experiment can be found in the [Projet Folder](https://github.com/ddobric/neocortexapi/tree/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning).  
+The overall project can be found in the [Project Folder](https://github.com/ddobric/neocortexapi/tree/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning). This project contemplates the existing Sequence Learning procedure in [SequenceLearning.cs](https://github.com/ddobric/neocortexapi/tree/master/source/Samples/NeoCortexApiSample). WIth the help of python libraries the input training sets have been generated. [DataGeneration](https://github.com/ddobric/neocortexapi/tree/SequenceLearning_ToanTruong/DataGeneration). Three videos have been created with moving circle, triangle and rectangle. The program tries to read videos as input and for that a library has been created using OpenCV2. To run the project in the C# platform this [VideoLibrary](https://github.com/ddobric/neocortexapi/tree/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary) needed some nuget packages named [Emgu.CV](https://www.nuget.org/packages/Emgu.CV/), [Emgu.CV.Bitmap](https://www.nuget.org/packages/Emgu.CV.Bitmap/) and [Emgu.CV.runtimes.windows](https://www.nuget.org/packages/Emgu.CV.runtime.windows/) with version higher than 4.5.3. The project reads input videos defined in the path and convert each videos into sequence of bit arrays. These bit arrays then pushed to the Spatial pooler where the learning stage begins. Homeostatic Plasticity Controller is connected with the SP so that it can reach to the stable state without forgetting. Afterwards the Temporal memory is introduced and the learning procedure is continued with SP and TM. The testing section has also been added where prediction is done from an input frame and the corresponding video has been generated depending on the correct prediction.
+
+Current encoding mechanism of the frames allows the conversion of each pixels into a portion in input bit array which is then pushed to the HTM model for training purpose. There are three sets of video in the VideoLibrary/SmallTrainingSet which are all in black and white(Circle, Triangle and Rectangle). These are all small size videos containing one label for each video. For testing and experimental purpose we have created another three small videos which contains label named Pentagon, Star and Hexagon accordingly. These newly created data sets are all in black and white color mode. Currently, we are trying to analyse accuracy of the model when it is being tested with these newly created data sets after training. Now we are creating videos with PURE color mode. Afterwards we will start training the existing model with BINARIZEDRGB and PURE color mode videos.
+  
 
 This project references Sequence Learning sample, see [SequenceLearning.cs](https://github.com/ddobric/neocortexapi/tree/master/source/Samples/NeoCortexApiSample).  
 
@@ -30,89 +27,113 @@ There are currently 3 training set:
 - SmallTrainingSet: has 3 video, 1 foreach label in {circle rectangle triangle}.    
 - TrainingVideos: has more video, intended for training in `PURE` colorMode
 - oneVideoTrainingSet
-The current most used set for training and debugging is SmallTrainingSet.  
+The current most used set for training and debugging is SmallTrainingSet. Also new videos have been generated for testing purpose(pentagon, hexagon and star). Different techniques have been used to generate these new video set which can be found here [NewDataGeneration](https://github.com/ShafaitAzam/neocortexapi-videolearning/blob/Shafait_Azam_CodeX/DataGeneration/DataGeneration.docx)  
 
 ## 4. Videos Reading:
-For more examples on how to use the Library, see [VideoLibraryTest](https://github.com/ddobric/neocortexapi/tree/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibraryTest).  
-Video Library is seperated into 3 sub classes:
-- [**VideoSet**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/VideoSet.cs):  
-Group of multiple **NVideo** put under the same label.  
-Read multiple video under a folder, use the folder name as label.  
-Get the stored **NFrame** from a given framekey.  
-Create converted videos as output from read training set.  
-There is a TestClass
+For the purpose of encoding and reading video data from the SmallTrainingSet a library has been created. This library consists of three subclasses named **VideoSet**, **NVideo** and **NFrame**. In the following section the detail analysis of these classes has been added.
 
-- [**NVideo**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/NVideo.cs):  
-Represent a video, has multiple **NFrame**.  
-Read a video in different frame rate. (only equal/lower framerates are possible)
-
-- [**NFrame**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/NFrame.cs):  
-represent a frame, has converted bitarray from the frame pixel reading.
-Can convert a bit array to Bitmap.  
-Also includes Framkey parameters, which is used to index the frame and learning with [HTMClassifier](https://github.com/ddobric/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/HtmClassifier.cs).  
-**Framkey = (label)\_(VideoName)\_(index)**  e.g. circle_vd1_03  
-The current color encoding of each frame when reading videos [includes 3 mode](https://github.com/ddobric/neocortexapi/blob/027ead7a860f1ae115c56583035fc8fe21b97c83/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/NFrame.cs#L12):  
-1. ``BLACKWHITE``: binarized frame by reading luminance value:  
-```csharp
-double luminance = (3 * pixel.R + pixel.B + 4 * pixel.G)>>3; 
-```  
-2. ``BINARIZEDRGB``: ref [ImageBinarizer](https://github.com/UniversityOfAppliedSciencesFrankfurt/imagebinarizer) binarized each color channel in Red, Green and Blue:
-```csharp
-imageBinary.AddRange(new List<int>() { (pixel.R > 255 / 2) ? 1 : 0, (pixel.G > 255 / 2) ? 1 : 0, (pixel.B > 255 / 2) ? 1 : 0 });
-```
-3. ``PURE``: encode all 8 bits for each channel in RGB adding 3 channel x 8bits for each pixel:
+- [**1. VideoSet**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/VideoSet.cs):
+The following code section in the VideoSet class reads video from the video folder path and the label has been added in accordance with the folder name.
 
 ```csharp
-imageBinary.AddRange(ColorChannelToBinList(pixel.R));
-imageBinary.AddRange(ColorChannelToBinList(pixel.G));
-imageBinary.AddRange(ColorChannelToBinList(pixel.B));
-```
-These can be further added to the [ImageBinarizer](https://github.com/UniversityOfAppliedSciencesFrankfurt/imagebinarizer) as custom encoder.  
-The current experiment focus on the ``BLACKWHITE`` colorMode, due to its low consumption in memory, which result in faster runtime of experiment.
-The lowest dimension of the video is 18*18, test has revealed lower dimension result in codec error of Emgu.CV with auto config mode -1 in code:  
+public VideoSet(string videoSetPath, ColorMode colorMode, int frameWidth, int frameHeight, double frameRate = 0)
+        {
+            nVideoList = new List<NVideo>();
+            Name = new List<string>();
+            // Set the label of the video collection as the name of the folder that contains it 
+            this.VideoSetLabel = Path.GetFileNameWithoutExtension(videoSetPath);
+
+            // Read videos from the video folder path 
+            nVideoList = ReadVideos(videoSetPath, colorMode, frameWidth, frameHeight, frameRate);
+        }
+ ```
+This class also defines a function named CreateConvertedVideos which is used to create a video with defined frameRate, frameWidth and frameHeight and put that video in a folder. Afterwards, a folder has been created which consists nothing but the converted frames in png format. These images (frames) can be used for the prediction purpose.
+
 ```csharp
-VideoWriter videoWriter = new($"{videoOutputPath}.mp4", -1, (int)frameRate, dimension, isColor)
-// Whereas dimension is dimension = new Size(18,18);
-// -1 means choosing an codec automatically, only on windows
+public void CreateConvertedVideos(string videoOutputDirectory)
+        {
+            foreach (NVideo nv in nVideoList)
+            {
+                string folderName = $"{videoOutputDirectory}" + @"\" + $"{nv.label}";
+                if (!Directory.Exists(folderName))
+                {
+                    Directory.CreateDirectory(folderName);
+                }
+                NVideo.NFrameListToVideo(nv.nFrames, $"{folderName}" + @"\" + $"{nv.name}", (int)nv.frameRate, new Size(nv.frameWidth, nv.frameHeight), true);
+                if (!Directory.Exists($"{folderName}" + @"\" + $"{nv.name}"))
+                {
+                    Directory.CreateDirectory($"{folderName}" + @"\" + $"{nv.name}");
+                }
+                for (int i = 0; i < nv.nFrames.Count; i += 1)
+                {
+                    nv.nFrames[i].SaveFrame($"{folderName}" + @"\" + $"{nv.name}" + @"\" + $"{nv.nFrames[i].FrameKey}.png");
+                }
+            }
+        }
 ```
+
+- [**2. NVideo**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/NVideo.cs):
+This class has been defined to read a video in different frame rates, frame height , frame width and color modes. The following code segment will show the basic settings of the parameters to manupulate a video.
+
+```csharp
+// Video Parameter 
+            int frameWidth = 18;
+            int frameHeight = 18;
+            ColorMode colorMode = ColorMode.BLACKWHITE;
+            // frame rate of 10 or smaller is possible
+            double frameRate = 10;
+ ```
+For the experimental purpose the frameWidth and frameHeight parameters are chaged to 20, 22 and 24 to test the various segments of the existing project. The NFrameListToVideo function is used to compress and write a video after the prediction part had been done which returns the calculated predicted frame and all other frames that come after this frame. The VideoWriter function in the following code segments is used to compress the video in the mp4 format. Also in the parameter,-1 which automatically defines a codec for the purpose compression. Here, fourcc = -1. fourcc means 4-character code of codec to compress the frames. For example, VideoWriter::fourcc('P','I','M','1') is a MPEG-1 codec, VideoWriter::fourcc('M','J','P','G') is a motion-jpeg codec etc.
+
+```csharp
+public static void NFrameListToVideo(List<NFrame> bitmapList, string videoOutputPath, int frameRate, Size dimension, bool isColor)
+        {
+            using (VideoWriter videoWriter = new($"{videoOutputPath}.mp4", -1, (int)frameRate, dimension, isColor))
+            {
+                foreach (NFrame frame in bitmapList)
+                {
+                    Bitmap tempBitmap = frame.IntArrayToBitmap(frame.EncodedBitArray);
+                    videoWriter.Write(tempBitmap.ToMat());
+                }
+            }
+        }
+```
+
+- [**NFrame**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/NFrame.cs):
+In this class different color modes have been defined such as BLACKWHITE, BINARIZEDRGB and PURE. The resolution of the actual video has been reduced for the purpose of testing. With the help of this class each bitmap has been encoded to an int array and binary array by iterating through every pixel of the frame. The function can also convert a bit array into bitmap.The Frame key parameter in this class is used to index the frames which is defined by **Framkey = (label)\_(VideoName)\_(index)**. This frame key is used for the classification purpose in the [HTMClassifier](https://github.com/ddobric/neocortexapi/blob/master/source/NeoCortexApi/Classifiers/HtmClassifier.cs).
+
 **NOTE:**  
 The current implementation of VideoLibrary saves all training data into a List of VideoSet, which contains all video information and their contents. For further scaling of the training set. It would be better to only store the index, where to access the video from the training data. This way the data would only be access when it is indexed and save memory for other processes.
 ## 4. Learning Process:
-Current HTM Configuration:
+The following code segment depicts the configuration of the Hierarchical Themporal Memory Model that have been designed to learn video. Run1() and Run2() uses same configuration. I have tested some combination of these parameters especially the PermanenceDecrement and the PermanenceIncrement parameter. It takes significantly long time to train the model with the given input set(HTMVideoLearning\VideoLibrary\SmallTrainingSet). As these two parameters are responsible for manupulating the overlap connections in the SP column, these parameters changes the accuracy of the model. I have also analyzed the [SequenceLearningExperiment](https://github.com/ddobric/neocortexapi/blob/master/source/SequenceLearningExperiment/Program.cs) and compare it with our project. Though we are learning videos, I found that above two parameters are essential when we want to learn sequences of numbers. Punishing of segments has not been initialized here to drop the connection of SP given a particular input space.
+The following code segment depicts the configuration of the Hierarchical Themporal Memory Model that have been designed to learn video. Run1() and Run2() uses same configuration. I have tested some combination of these parameters especially the PermanenceDecrement and the PermanenceIncrement parameter. It takes significantly long time to train the model with the given input set(HTMVideoLearning\VideoLibrary\SmallTrainingSet). As these two parameters are responsible for manupulating the overlap connections in the SP column, these parameters changes the accuracy of the model. I have also analyzed the SequenceLearningExperiment [Program.cs](https://github.com/ddobric/neocortexapi/blob/master/source/SequenceLearningExperiment/Program.cs) and compare it with our project. Though we are learning videos, I found that above two parameters are essential when we want to learn sequences of numbers. Punishing of segments has not been initialized here to drop the connection of SP given a particular input space.
+
 ```csharp
 private static HtmConfig GetHTM(int[] inputBits, int[] numColumns)
 {
     HtmConfig htm = new(inputBits, numColumns)
     {
         Random = new ThreadSafeRandom(42),
-
         CellsPerColumn = 30,
         GlobalInhibition = true,
         //LocalAreaDensity = -1,
         NumActiveColumnsPerInhArea = 0.02 * numColumns[0],
         PotentialRadius = (int)(0.15 * inputBits[0]),
         //InhibitionRadius = 15,
-
         MaxBoost = 10.0,
         //DutyCyclePeriod = 25,
         //MinPctOverlapDutyCycles = 0.75,
         MaxSynapsesPerSegment = (int)(0.02 * numColumns[0]),
-
         //ActivationThreshold = 15,
         //ConnectedPermanence = 0.5,
-
         // Learning is slower than forgetting in this case.
         //PermanenceDecrement = 0.15,
         //PermanenceIncrement = 0.15,
-
         // Used by punishing of segments.
     };
     return htm;
 }
 ```
-Running the experiment Run1 and Run2 first prompt the user to input a training folder path. There are currently 3 sample training data sets, drag the folder to the command window to insert its path to the prompt. Hit `Enter` and the Video reading begins.
-
-After reading the Videos into VideoSets, the learning begins.
 ### 1. SP Learning with HomeoStatic Plasticity Controller (HPA):
 This first section of learning use Homeostatic Plasticity Controller:
 ```csharp
@@ -286,4 +307,5 @@ The trained layer will use this image to try recreate the video it has learned f
 
 For an review on output folder TEST of both the Run after the learning one can refer to [SampleExperimentOutputTEST](https://github.com/ddobric/neocortexapi/tree/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/SampleExperimentOutputTEST).
 
+Different videos have been generated in order to test the project in various conditions. Parameters of the code have been manipulated in order to figure out the impact of those parameters in the project. Detailed test reports have been generated which can be found here [TestReports](https://github.com/ShafaitAzam/neocortexapi-videolearning/tree/MySEProject/Documentation/TestReports). These includes test reports both for existing version of the project and the migrated version of the project.
 
