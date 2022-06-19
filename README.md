@@ -13,8 +13,11 @@ https://github.com/ShafaitAzam/neocortexapi/tree/Shafait_Azam_CodeX
 # Video Learning With NeoCortexApi:
 Module: Project 12  
 Instructor: Damir Dobric, Proffessor Andreas Pech.  
-Student:  
-Toan Thanh Truong, Mtr. 1185050 Major: IT Gbr. 23.02.1997  
+Student: 
+Mashnunul Huq, Mtr.1384042 Major:IT
+Nusrat Jahan Sumi, Mtr.1345476 Major:IT 
+Toan Thanh Truong, Mtr. 1185050 Major: IT Gbr. 23.02.1997
+  
 _this readme serves as the submitted projectreport for the registered project Video Learning with HTM_
 
 ## 1. Introduction:
@@ -56,6 +59,7 @@ There is a TestClass
 - [**NVideo**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/NVideo.cs):  
 Represent a video, has multiple **NFrame**.  
 Read a video in different frame rate. (only equal/lower framerates are possible)
+(In case new video codec is used for making the predicted video, add the file extension with Four character codec in the CorrespondingFileExtension enumeration class)
 
 - [**NFrame**](https://github.com/ddobric/neocortexapi/blob/SequenceLearning_ToanTruong/Project12_HTMCLAVideoLearning/HTMVideoLearning/VideoLibrary/NFrame.cs):  
 represent a frame, has converted bitarray from the frame pixel reading.
@@ -88,7 +92,7 @@ VideoWriter videoWriter = new($"{videoOutputPath}.mp4", -1, (int)frameRate, dime
 ```
 **NOTE:**  
 The current implementation of VideoLibrary saves all training data into a List of VideoSet, which contains all video information and their contents. For further scaling of the training set. It would be better to only store the index, where to access the video from the training data. This way the data would only be access when it is indexed and save memory for other processes.
-## 4. Learning Process:
+## 4.1. Learning Process:
 Current HTM Configuration:
 ```csharp
 private static HtmConfig GetHTM(int[] inputBits, int[] numColumns)
@@ -124,6 +128,27 @@ private static HtmConfig GetHTM(int[] inputBits, int[] numColumns)
 Running the experiment Run1 and Run2 first prompt the user to input a training folder path. There are currently 3 sample training data sets, drag the folder to the command window to insert its path to the prompt. Hit `Enter` and the Video reading begins.
 
 After reading the Videos into VideoSets, the learning begins.
+## 4.2. Video Configuration:
+Current Video Configuration:
+```json
+  "frameWidth": 18,
+  "frameHeight": 18,
+  "frameRate": 12,
+  "ColorMode": "BLACKWHITE",
+  "TrainingDatasetRoot": "SmallTrainingSet",
+  "TestFiles": [
+    "Run2ExperimentOutput\\Converted\\Circle\\circle\\Circle_circle_3.png",
+    "Run2ExperimentOutput\\Converted\\Circle\\circle\\Circle_circle_2.png",
+    "Run2ExperimentOutput\\Converted\\Rectangle\\rectangle\\Rectangle_rectangle_28.png",
+    "Run2ExperimentOutput\\Converted\\Rectangle\\rectangle\\Rectangle_rectangle_18.png",
+    "Run2ExperimentOutput\\Converted\\Triangle\\triangle\\Triangle_triangle_23.png",
+    "Run2ExperimentOutput\\Converted\\Triangle\\triangle\\Triangle_triangle_0.png"
+  ]
+``` 
+To imply new video sets these configuration in vidoeConfig.json needs to be changed acordingly and the video files must be kept in the folder named "SmallTrainingSet".
+If the video file codec is not mp4 then go to the line where NVideo.CreateVideoFromFrames is initiated and change the argument codec = ['P', 'I', 'M', '1'] or ['H', '2', '6', '4']
+The default codec = ['m', 'p', '4', 'v'] 
+
 ### 1. SP Learning with HomeoStatic Plasticity Controller (HPA):
 This first section of learning use Homeostatic Plasticity Controller:
 ```csharp
@@ -210,7 +235,7 @@ The trained layer will use this image to try recreate the video it has learned f
 
 
 **RESULT**  
-- Due to the conversion of the input picture to fit the current model the input is also processed by VideoLibrary to the dimension of the training model. The scaled input image can also be found in the Run1ExperimentOutput/TEST/Predicted from (image name)/.  
+- Due to the conversion of the input picture to fit the current model the input is also processed by VideoLibrary to the dimension of the training model. The scaled input image can also be found in the TrainWithFrameKey_Date_Time/TEST/Predicted from (image name)/.  
 - Ideally, a sequence of half the length of the video would regards this experiment as a success. Unfortunately, runs result in sequence of 1-5 frames after the input frame. 
 - It is observed that the triangle set - the last training set in small training set has the best sequence generation with sometime up to 15 frames. 
 - In some case frame that overlap each other e.g. the triangle at the same place of the circle may result in shape change but correct translation.  
@@ -284,11 +309,11 @@ The trained layer will use this image to try recreate the video it has learned f
 - The image can be drag into the command window and press enter to confirm input. The model use the input frame to predict the key.  
 - if there are predicted cells from compute, HTMClassifier takes at most 5 possibilities (can be changed in code) of the predicted key.  
 - In case there are at least 1 key, the codecs will appears and the green lines indicate the next predicted key from the memory by HTMClassifier. 
-- The output video can be found under Run2ExperimentOutput/TEST/ with the folder name (Predicted From "Image name").  
-- Usually in this Test, The input image are chosen from the Directory Run1Experiment/converted/(label)/(videoName)/(FrameKey) for easier check if the trained model predict the correct next frame.  
+- The output video can be found under TrainWithFrameKey_Date_Time/TEST/ with the folder name (Predicted From "Image name").  
+- Usually in this Test, The input image are chosen from the Directory TestImageSet/converted/(label)/(videoName)/(FrameKey) for easier check if the trained model predict the correct next frame.  
 
 **RESULT**
-- Due to the conversion of the input picture to fit the current model the input is also processed by VideoLibrary to the dimension of the training model. The scaled input image can also be found in the Run1ExperimentOutput/TEST/Predicted from (image name)/. 
+- Due to the conversion of the input picture to fit the current model the input is also processed by VideoLibrary to the dimension of the training model. The scaled input image can also be found in the TrainWithFrameKey_Date_Time/TEST/Predicted from (image name)/. 
 - The log files after learning each video are also recorded as saturatedAccuracyLog_(label)_(video name) in the TEST/ directory.
 - The output Video has full length of the video.
 - The prediction sometimes forget the first video and enter unstable state again. This was mentioned in HPA above. The current way to cope with the phenomenom is comment out `cls.ClearState()` in declaration of HPA.

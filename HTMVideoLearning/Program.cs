@@ -23,7 +23,7 @@ namespace HTMVideoLearning
             // Saving all encoding of video frame may lead to memory outage
             // CONSIDER: taking only the data in VideoConfiguration then indexing the image name in Converted
 
-            VideoLearning.Run2(videoConfig, htmConfig);
+            VideoLearning.TrainWithFrameKey(videoConfig, htmConfig);
         }
 
 

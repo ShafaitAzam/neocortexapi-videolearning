@@ -1,9 +1,53 @@
-﻿using Emgu.CV;
+﻿using System.ComponentModel;
+using Emgu.CV;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System;
 namespace VideoLibrary
 {
+    /// <summary>
+    /// File extension is required to create video file from Emgu library's
+    /// VideoWriter class, Four character codec and file extension must be compatible
+    /// </summary>
+    enum CorrespondingFileExtension
+    {
+        //if new codec is used, put the file extension name in the Description(*) and then the codec with a , at last
+        [Description(".mp4")]
+        mp4v,
+        
+        [Description(".mp4")]
+        H264,
+        
+        [Description(".avi")]
+        MJPG,
+        
+    }
+    /// <summary>
+    /// To get the string correspondance of an enumerator value, wrapped up 
+    /// class is requred as each enumerator itself is a class
+    /// </summary>
+    public static class EnumExtensions
+    {
+        /// <summary>
+        /// It will give the corresponding string value of the enumeraotr value 
+        /// </summary>
+        /// <param name="value">while calling this method value is not required to be passed</param>
+        /// <returns>Corresponding string value is returned</returns>
+        public static string GetEnumDescription(this Enum value)
+        {
+        System.Reflection.FieldInfo fi = value.GetType().GetField(value.ToString());
+
+        DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+        if (attributes != null && attributes.Length > 0)
+            return attributes[0].Description;
+            
+        else
+            return value.ToString();
+        }
+    }
+
     /// <summary>
     /// <para>
     /// <br>Represent a single video, which contains</br>
@@ -118,8 +162,12 @@ namespace VideoLibrary
                 codec = new char[] {'m', 'p', '4', 'v'};
             }
             int fourcc = VideoWriter.Fourcc(codec[0], codec[1], codec[2], codec[3]);
+            string codecString = new string(codec);
+            CorrespondingFileExtension extension = (CorrespondingFileExtension)Enum.Parse(typeof(CorrespondingFileExtension), codecString, true);
+            string fileExtension = extension.GetEnumDescription();
+            
             //There was a -1 instead of fourcc which works on older framework to bring the drop down menu selection of codec
-            using (VideoWriter videoWriter = new($"{videoOutputPath}.mp4", fourcc, (int)frameRate, dimension, isColor))
+            using (VideoWriter videoWriter = new(videoOutputPath+ fileExtension, fourcc, (int)frameRate, dimension, isColor))
             {
                 foreach (NFrame frame in bitmapList)
                 {
@@ -128,5 +176,6 @@ namespace VideoLibrary
                 }
             }
         }
+        
     }
 }

@@ -45,7 +45,7 @@
   "MaxSegmentsPerCell": 225,
   "MaxSynapsesPerSegment": 225,
   "PermanenceIncrement": 0.1,
-  "PermanenceDecrement": 0.1,
+  "PermanenceDecrement": 0.01,
   "ColumnModuleTopology": null,
   "InputModuleTopology": null,
   "Memory": null,
